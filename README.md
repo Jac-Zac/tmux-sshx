@@ -9,15 +9,54 @@ A fuzzy SSH host selector for Tmux, with preview capabilities, similar to tmux-s
 - [tpm](https://github.com/tmux-plugins/tpm)
 - [fzf](https://github.com/junegunn/fzf)
 - [fzf-tmux](https://github.com/junegunn/fzf#fzf-tmux-script)
-- Optional: [bat](https://github.com/sharkdp/bat) for syntax highlighting in preview
+- [bat](https://github.com/sharkdp/bat) for syntax highlighting in preview
+
+### Installing Prerequisites
+
+#### macOS (with Homebrew)
+```bash
+brew install tmux tpm fzf bat
+```
+
+#### Ubuntu/Debian
+```bash
+sudo apt update
+sudo apt install tmux fzf bat
+# Install TPM manually
+git clone https://github.com/tmux-plugins/tpm ~/.tmux/plugins/tpm
+```
+
+#### Arch Linux
+```bash
+sudo pacman -S tmux fzf bat tmux-plugin-manager
+```
+
+#### Manual Installation
+- **Tmux**: Download from https://github.com/tmux/tmux/releases
+- **TPM**: `git clone https://github.com/tmux-plugins/tpm ~/.tmux/plugins/tpm`
+- **fzf**: Download from https://github.com/junegunn/fzf/releases
+- **bat**: Download from https://github.com/sharkdp/bat/releases
 
 ## Install 💻
 
-Add this to your `.tmux.conf` and run `Ctrl-I` for TPM to install the plugin.
+### Option 1: Using TPM (Recommended)
+1. Add this to your `.tmux.conf`:
+   ```
+   set -g @plugin 'yourusername/tmux-sshx'
+   ```
+2. Reload your tmux config: `tmux source ~/.tmux.conf`
+3. Install the plugin: Press `Ctrl-I` (or run `~/.tmux/plugins/tpm/bin/install_plugins`)
 
-```
-set -g @plugin 'yourusername/tmux-sshx'
-```
+### Option 2: Manual Installation
+1. Clone this repository:
+   ```bash
+   git clone https://github.com/yourusername/tmux-sshx.git ~/.tmux/plugins/tmux-sshx
+   ```
+2. Add to your `.tmux.conf`:
+   ```
+   run '~/.tmux/plugins/tmux-sshx/sshx.tmux'
+   ```
+3. Reload your tmux config: `tmux source ~/.tmux.conf`
 
 ## Configure ⚙️
 
@@ -68,15 +107,19 @@ set -g @sshx-auto-accept 'off'
 
 ## Working with SSHX 👷
 
-Launching the plugin pops up an fzf-tmux "popup" with fuzzy search over SSH hosts from `~/.ssh/config`. If you select a host and hit enter, it will SSH into it. If in tmux, it opens a new window; otherwise, runs SSH directly.
+Launching the plugin opens a fuzzy finder at the bottom of your screen with SSH hosts from `~/.ssh/config`. The preview pane on the right shows the selected host's configuration with syntax highlighting.
 
-- `enter` accept selection
-- `esc` abort
+- `enter` accept selection and SSH into host
+- `esc` abort without connecting
 - `ctrl-u` scroll preview up
 - `ctrl-d` scroll preview down
 - `ctrl-n` select up
 - `ctrl-p` select down
 - `?` toggles the preview pane
+
+When you select a host:
+- If inside tmux: Opens SSH in a new tmux window
+- If outside tmux: Runs SSH directly in your terminal
 
 ## Thanks ❤️
 

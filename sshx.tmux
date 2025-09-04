@@ -43,6 +43,8 @@ handle_args() {
 		PREVIEW_LINE="${SCRIPTS_DIR%/}/preview.sh {}"
 	fi
 
+	fzf_size_arg="--tmux bottom"
+
 	args=(
 		--bind "$ACCEPT"
 		--bind "$bind_exit:abort"
@@ -56,7 +58,7 @@ handle_args() {
 		--preview-window="${preview_location},${preview_ratio},,"
 		--layout="$layout_mode"
 		--pointer="$pointer_icon"
-		-p "$window_width,$window_height"
+		"${fzf_size_arg},$window_width,$window_height"
 		--prompt "$prompt_icon"
 		--print-query
 		--tac
