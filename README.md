@@ -2,23 +2,24 @@
 
 A fuzzy SSH host selector for Tmux, with preview capabilities, similar to tmux-sessionx but for SSH hosts.
 
-[![image](https://github.com/omerxx/tmux-sessionx/raw/main/img/sessionxv2.png)](https://github.com/omerxx/tmux-sessionx/blob/main/img/sessionxv2.png)
+<!-- [![image](https://github.com/omerxx/tmux-sessionx/raw/main/img/sessionxv2.png)](https://github.com/omerxx/tmux-sessionx/blob/main/img/sessionxv2.png) -->
 
 ## Prerequisites 🛠️
 
 - [tpm](https://github.com/tmux-plugins/tpm)
 - [fzf](https://github.com/junegunn/fzf)
-- [fzf-tmux](https://github.com/junegunn/fzf#fzf-tmux-script)
 - [bat](https://github.com/sharkdp/bat) for syntax highlighting in preview
 
 ### Installing Prerequisites
 
 #### macOS (with Homebrew)
+
 ```bash
 brew install tmux tpm fzf bat
 ```
 
 #### Ubuntu/Debian
+
 ```bash
 sudo apt update
 sudo apt install tmux fzf bat
@@ -27,11 +28,13 @@ git clone https://github.com/tmux-plugins/tpm ~/.tmux/plugins/tpm
 ```
 
 #### Arch Linux
+
 ```bash
 sudo pacman -S tmux fzf bat tmux-plugin-manager
 ```
 
 #### Manual Installation
+
 - **Tmux**: Download from https://github.com/tmux/tmux/releases
 - **TPM**: `git clone https://github.com/tmux-plugins/tpm ~/.tmux/plugins/tpm`
 - **fzf**: Download from https://github.com/junegunn/fzf/releases
@@ -40,23 +43,12 @@ sudo pacman -S tmux fzf bat tmux-plugin-manager
 ## Install 💻
 
 ### Option 1: Using TPM (Recommended)
+
 1. Add this to your `.tmux.conf`:
    ```
-   set -g @plugin 'yourusername/tmux-sshx'
+   set -g @plugin 'jac-zac/tmux-sshx'
    ```
-2. Reload your tmux config: `tmux source ~/.tmux.conf`
-3. Install the plugin: Press `Ctrl-I` (or run `~/.tmux/plugins/tpm/bin/install_plugins`)
-
-### Option 2: Manual Installation
-1. Clone this repository:
-   ```bash
-   git clone https://github.com/yourusername/tmux-sshx.git ~/.tmux/plugins/tmux-sshx
-   ```
-2. Add to your `.tmux.conf`:
-   ```
-   run '~/.tmux/plugins/tmux-sshx/sshx.tmux'
-   ```
-3. Reload your tmux config: `tmux source ~/.tmux.conf`
+2. Install the plugin: Press `Ctrl-I` (or run `~/.tmux/plugins/tpm/bin/install_plugins`)
 
 ## Configure ⚙️
 
@@ -118,9 +110,10 @@ Launching the plugin opens a fuzzy finder at the bottom of your screen with SSH 
 - `?` toggles the preview pane
 
 When you select a host:
+
 - If inside tmux: Opens SSH in a new tmux window
 - If outside tmux: Runs SSH directly in your terminal
 
 ## Thanks ❤️
 
-Inspired by [tmux-sessionx](https://github.com/omerxx/tmux-sessionx) and your original tmux_fzf_ssh function.
+Inspired by [tmux-sessionx](https://github.com/omerxx/tmux-sessionx).
