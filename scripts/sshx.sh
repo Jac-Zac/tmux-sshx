@@ -40,7 +40,7 @@ get_matching_tmux_windows() {
 
 		# Check if window name matches any SSH host
 		if echo "$ssh_hosts" | grep -q "^${window_name}$"; then
-			echo -e "\033[34m\033[0m $session:$window - $window_name"
+			echo -e "\033[36m $session:$window - $window_name\033[0m"
 		fi
 	done | sort
 }
@@ -50,7 +50,7 @@ get_ssh_configs() {
 	if [[ -z "$hosts" ]]; then
 		return 1
 	fi
-	echo "$hosts" | awk '{print "\033[33m\033[0m " $0}'
+	echo "$hosts" | awk '{print "\033[93m " $0 "\033[0m"}'
 }
 
 tmux_option_or_fallback() {
@@ -129,25 +129,27 @@ run_plugin() {
 	# Use fzf-tmux with colored emojis and sesh-like interface
 	if [[ "$FZF_BUILTIN_TMUX" == "on" ]]; then
 		RESULT=$(echo -e "${INPUT}" | fzf \
-			--no-sort --ansi --border-label ' sshx ' --prompt $'\033[34m⚡\033[0m  ' \
+			--no-sort --ansi --border-label ' sshx ' --prompt '⚡  ' \
 			--header '  ^a all ^t tmux ^c configs' \
 			--bind 'tab:down,btab:up' \
-			--bind 'ctrl-a:change-prompt(\033[34m⚡\033[0m  )+reload(echo -e "'"$TMUX_WINDOWS\n$SSH_CONFIGS"'")' \
-			--bind 'ctrl-t:change-prompt(\033[34m\033[0m  )+reload(echo -e "'"$TMUX_WINDOWS"'")' \
-			--bind 'ctrl-c:change-prompt(\033[33m\033[0m  )+reload(echo -e "'"$SSH_CONFIGS"'")' \
+			--bind 'ctrl-a:change-prompt(⚡  )+reload(echo -e "'"$TMUX_WINDOWS\n$SSH_CONFIGS"'")' \
+			--bind 'ctrl-t:change-prompt(  )+reload(echo -e "'"$TMUX_WINDOWS"'")' \
+			--bind 'ctrl-c:change-prompt(  )+reload(echo -e "'"$SSH_CONFIGS"'")' \
 			--preview-window 'right:60%' \
 			--preview "$CURRENT_DIR/preview.sh {}" \
+			--color 'fg+:255,bg+:236' \
 			"${fzf_opts[@]}" "${args[@]}" | tail -n1)
 	else
 		RESULT=$(echo -e "${INPUT}" | fzf-tmux -p 80%,70% \
-			--no-sort --ansi --border-label ' sshx ' --prompt $'\033[34m⚡\033[0m  ' \
+			--no-sort --ansi --border-label ' sshx ' --prompt '⚡  ' \
 			--header '  ^a all ^t tmux ^c configs' \
 			--bind 'tab:down,btab:up' \
-			--bind 'ctrl-a:change-prompt(\033[34m⚡\033[0m  )+reload(echo -e "'"$TMUX_WINDOWS\n$SSH_CONFIGS"'")' \
-			--bind 'ctrl-t:change-prompt(\033[34m\033[0m  )+reload(echo -e "'"$TMUX_WINDOWS"'")' \
-			--bind 'ctrl-c:change-prompt(\033[33m\033[0m  )+reload(echo -e "'"$SSH_CONFIGS"'")' \
+			--bind 'ctrl-a:change-prompt(⚡  )+reload(echo -e "'"$TMUX_WINDOWS\n$SSH_CONFIGS"'")' \
+			--bind 'ctrl-t:change-prompt(  )+reload(echo -e "'"$TMUX_WINDOWS"'")' \
+			--bind 'ctrl-c:change-prompt(  )+reload(echo -e "'"$SSH_CONFIGS"'")' \
 			--preview-window 'right:60%' \
 			--preview "$CURRENT_DIR/preview.sh {}" \
+			--color 'fg+:255,bg+:236' \
 			"${fzf_opts[@]}" "${args[@]}" | tail -n1)
 	fi
 }

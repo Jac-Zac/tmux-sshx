@@ -20,8 +20,8 @@ if [[ "$selected" == ** ]]; then
 		tmux list-windows -t "$session" -F "#I: #W (#F)" | grep "^$window:"
 		echo ""
 		echo "--- Window Content ---"
-		# Capture the pane content from the selected window
-		tmux capture-pane -t "$session:$window" -p 2>/dev/null || echo "Unable to capture window content"
+		# Capture the pane content from the selected window with colors
+		tmux capture-pane -t "$session:$window" -e -p 2>/dev/null || echo "Unable to capture window content"
 	fi
 else
 	# This is an SSH host - display SSH configuration

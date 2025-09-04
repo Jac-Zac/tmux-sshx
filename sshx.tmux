@@ -27,7 +27,7 @@ window_settings() {
 }
 
 handle_binds() {
-	additional_fzf_options=$(tmux_option_or_fallback "@sshx-additional-options" "--color pointer:9,spinner:92,marker:46")
+	additional_fzf_options=$(tmux_option_or_fallback "@sshx-additional-options" "--color fg:252,bg:236,hl:67,fg+:252,bg+:239,hl+:81,info:144,prompt:161,spinner:135,pointer:9,marker:46,header:144")
 	bind_exit=$(tmux_option_or_fallback "@sshx-bind-abort" "esc")
 	bind_accept=$(tmux_option_or_fallback "@sshx-bind-accept" "enter")
 	bind_scroll_up=$(tmux_option_or_fallback "@sshx-bind-scroll-up" "ctrl-u")
