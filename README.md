@@ -8,7 +8,7 @@ A fuzzy SSH host selector for Tmux, with preview capabilities, similar to tmux-s
 
 - [tpm](https://github.com/tmux-plugins/tpm)
 - [fzf](https://github.com/junegunn/fzf) (version 0.53.0+ recommended for built-in tmux support)
-- [bat](https://github.com/sharkdp/bat) for syntax highlighting in preview (optional, falls back to plain text)
+- Optional: [bat](https://github.com/sharkdp/bat) for syntax highlighting in preview
 
 ### Installing Prerequisites
 
