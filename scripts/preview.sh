@@ -7,7 +7,7 @@ if [[ -z "$selected" ]]; then
 fi
 
 # Remove ANSI color codes and emoji prefix to get the actual name
-clean_name=$(echo "$selected" | sed 's/\x1b\[[0-9;]*m//g' | sed 's/^[^ ]* //')
+clean_name=$(echo "$selected" | sed 's/\x1b\[[0-9;]*m//g' | sed 's/^[^ ]* //' | sed 's/ - .*//')
 
 if [[ "$selected" == ** ]]; then
 	# This is a tmux window
@@ -18,6 +18,10 @@ if [[ "$selected" == ** ]]; then
 		echo "Tmux Window: $session:$window"
 		echo ""
 		tmux list-windows -t "$session" -F "#I: #W (#F)" | grep "^$window:"
+		echo ""
+		echo "--- Window Content ---"
+		# Capture the pane content from the selected window
+		tmux capture-pane -t "$session:$window" -p 2>/dev/null || echo "Unable to capture window content"
 	fi
 else
 	# This is an SSH host - display SSH configuration

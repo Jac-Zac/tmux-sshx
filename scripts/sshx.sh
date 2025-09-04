@@ -69,7 +69,7 @@ handle_output() {
 	fi
 
 	# Remove ANSI color codes and emoji prefix to get the actual name
-	clean_name=$(echo "$selected" | sed 's/\x1b\[[0-9;]*m//g' | sed 's/^[^ ]* //')
+	clean_name=$(echo "$selected" | sed 's/\x1b\[[0-9;]*m//g' | sed 's/^[^ ]* //' | sed 's/ - .*//')
 
 	if [[ "$selected" == ** ]]; then
 		# This is a tmux window
@@ -77,8 +77,16 @@ handle_output() {
 			# It's a window (session:window format)
 			session=$(echo "$clean_name" | cut -d: -f1)
 			window=$(echo "$clean_name" | cut -d: -f2)
+			# Switch to session first, then select window
+			if [ -n "$TMUX" ]; then
+				# Already in tmux, switch client to session
+				tmux switch-client -t "$session"
+			else
+				# Not in tmux, attach to session
+				tmux attach-session -t "$session"
+			fi
+			# Select the specific window
 			tmux select-window -t "$session:$window"
-			tmux attach-session -t "$session" 2>/dev/null || tmux switch-client -t "$session"
 		fi
 	else
 		# This is an SSH host
