@@ -19,6 +19,8 @@ brew install tmux fzf bat
 # TPM is installed via git clone in the manual section
 ```
 
+**Note**: `bat` is used for syntax highlighting in the preview pane with SSH config syntax highlighting. If bat is not available, the preview will still work but without colors.
+
 #### Ubuntu/Debian
 
 ```bash
@@ -70,17 +72,20 @@ set -g @sshx-bind '<mykey>'
 set -g @sshx-prefix off
 
 # Change window dimensions
-set -g @sshx-window-height '75%'
-set -g @sshx-window-width '75%'
+set -g @sshx-window-height '65%'
+set -g @sshx-window-width '70%'
 
-# If you want change the layout to top you can set
-set -g @sshx-layout 'reverse'
+# Layout options: 'default' (bottom) or 'reverse' (top)
+set -g @sshx-layout 'default'
 
 # If you want to change the prompt, the space is needed to not overlap the icon
 set -g @sshx-prompt " "
 
 # If you want to change the pointer
 set -g @sshx-pointer "▶ "
+
+# The window displays "tmux-sshx" as the border label at the top
+# This helps identify the window when multiple are open
 
 # Preview location and screenspace can be adjusted with these
 set -g @sshx-preview-location 'right'
@@ -111,6 +116,7 @@ Launching the plugin opens a fuzzy finder at the bottom of your screen with SSH 
 - `~/.ssh/config` exists and contains `Host` entries
 - Your SSH config has valid host definitions
 - The file is readable (run `ls -la ~/.ssh/config`)
+- The file has correct permissions (run `chmod 600 ~/.ssh/config` if needed)
 
 - `enter` accept selection and SSH into host
 - `esc` abort without connecting

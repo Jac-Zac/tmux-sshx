@@ -24,10 +24,6 @@ tmux_option_or_fallback() {
 	echo "$option_value"
 }
 
-input() {
-	get_ssh_hosts 2>/dev/null || echo "Error: Check your SSH configuration"
-}
-
 handle_output() {
 	host="$*"
 	if [[ -z "$host" ]]; then
@@ -36,7 +32,7 @@ handle_output() {
 
 	if [ -n "$TMUX" ]; then
 		# Open a new tmux window and run ssh; close the window automatically when done
-		tmux new-window -n "$host" "ssh $host; tmux kill-window"
+		tmux new-window -n "$host" "ssh '$host'; tmux kill-window"
 	else
 		# Not in tmux, run normal SSH
 		ssh "$host"
@@ -46,7 +42,8 @@ handle_output() {
 }
 
 run_plugin() {
-	eval $(tmux show-option -gqv @sshx-_built-args)
+	INPUT=$(get_ssh_hosts 2>/dev/null || echo "Error: Check your SSH configuration")
+	eval "$(tmux show-option -gqv @sshx-_built-args)"
 	FZF_BUILTIN_TMUX=$(tmux show-option -gqv @sshx-fzf-builtin-tmux)
 	if [[ "$FZF_BUILTIN_TMUX" == "on" ]]; then
 		RESULT=$(echo -e "${INPUT}" | fzf "${fzf_opts[@]}" "${args[@]}" | tail -n1)

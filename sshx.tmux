@@ -19,9 +19,9 @@ preview_settings() {
 }
 
 window_settings() {
-	window_height=$(tmux_option_or_fallback "@sshx-window-height" "75%")
-	window_width=$(tmux_option_or_fallback "@sshx-window-width" "75%")
-	layout_mode=$(tmux_option_or_fallback "@sshx-layout" "reverse")
+	window_height=$(tmux_option_or_fallback "@sshx-window-height" "65%")
+	window_width=$(tmux_option_or_fallback "@sshx-window-width" "70%")
+	layout_mode=$(tmux_option_or_fallback "@sshx-layout" "default")
 	prompt_icon=$(tmux_option_or_fallback "@sshx-prompt" " ")
 	pointer_icon=$(tmux_option_or_fallback "@sshx-pointer" "▶")
 }
@@ -45,9 +45,9 @@ handle_args() {
 	FZF_BUILTIN_TMUX=$(tmux_option_or_fallback "@sshx-fzf-builtin-tmux" "off")
 
 	if [[ "$FZF_BUILTIN_TMUX" == "on" ]]; then
-		fzf_size_arg="--tmux"
+		fzf_size_arg="--tmux $window_width,$window_height"
 	else
-		fzf_size_arg="-p"
+		fzf_size_arg="-p $window_width,$window_height"
 	fi
 
 	args=(
@@ -63,7 +63,7 @@ handle_args() {
 		--preview-window="${preview_location},${preview_ratio},,"
 		--layout="$layout_mode"
 		--pointer="$pointer_icon"
-		"${fzf_size_arg}" "$window_width,$window_height"
+		"$fzf_size_arg"
 		--prompt "$prompt_icon"
 		--print-query
 		--tac
@@ -75,6 +75,9 @@ handle_args() {
 		args+=(--bind one:accept)
 	fi
 
+	# Add border label to show window name
+	args+=(--border-label "tmux-sshx")
+
 	eval "fzf_opts=($additional_fzf_options)"
 }
 
@@ -85,7 +88,7 @@ handle_args
 
 tmux set-option -g @sshx-_built-args "$(declare -p args)"
 
-if [ `tmux_option_or_fallback "@sshx-prefix" "on"` = "on"  ]; then
+if [ "$(tmux_option_or_fallback "@sshx-prefix" "on")" = "on" ]; then
 	tmux bind-key "$(tmux_option_or_fallback "@sshx-bind" "S")" run-shell "$CURRENT_DIR/scripts/sshx.sh"
 else
 	tmux bind-key -n "$(tmux_option_or_fallback "@sshx-bind" "S")" run-shell "$CURRENT_DIR/scripts/sshx.sh"
