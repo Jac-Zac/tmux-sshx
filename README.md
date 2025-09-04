@@ -2,7 +2,7 @@
 
 A fuzzy SSH host selector for Tmux, with preview capabilities, similar to tmux-sessionx but for SSH hosts.
 
-<!-- [![image](https://github.com/omerxx/tmux-sessionx/raw/main/img/sessionxv2.png)](https://github.com/omerxx/tmux-sessionx/blob/main/img/sessionxv2.png) -->
+![image](showcase.gif)
 
 ## Prerequisites 🛠️
 
@@ -113,6 +113,7 @@ set -g @sshx-fzf-builtin-tmux 'off'
 Launching the plugin opens a fuzzy finder at the bottom of your screen with SSH hosts from `~/.ssh/config`. The preview pane on the right shows the selected host's configuration with syntax highlighting.
 
 **Note**: If the popup appears empty, check that:
+
 - `~/.ssh/config` exists and contains `Host` entries
 - Your SSH config has valid host definitions
 - The file is readable (run `ls -la ~/.ssh/config`)
@@ -134,7 +135,9 @@ When you select a host:
 ## Troubleshooting 🔧
 
 ### Empty Popup
+
 If the fuzzy finder appears but is empty:
+
 1. Check if `~/.ssh/config` exists: `ls -la ~/.ssh/config`
 2. Verify it contains Host entries: `grep "^Host " ~/.ssh/config`
 3. Ensure the file is readable: `cat ~/.ssh/config`
@@ -146,12 +149,15 @@ If the fuzzy finder appears but is empty:
    ```
 
 ### Permission Issues
+
 If you get permission errors:
+
 ```bash
 chmod 600 ~/.ssh/config
 ```
 
 ### Preview Not Working
+
 - Install `bat` for syntax highlighting: `brew install bat` (macOS) or `sudo apt install bat` (Ubuntu)
 - Or the preview will still work but without colors
 
