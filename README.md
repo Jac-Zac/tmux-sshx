@@ -110,6 +110,14 @@ set -g @sshx-auto-accept 'off'
 # Uses \`fzf --tmux\` instead of the \`fzf-tmux\` script (requires fzf >= 0.53).
 # Set to 'on' if you have fzf 0.53+ and want to use built-in tmux support
 set -g @sshx-fzf-builtin-tmux 'off'
+
+# Customize key bindings within the fuzzy finder
+set -g @sshx-bind-abort 'esc'
+set -g @sshx-bind-accept 'enter'
+set -g @sshx-bind-scroll-up 'ctrl-u'
+set -g @sshx-bind-scroll-down 'ctrl-d'
+set -g @sshx-bind-select-up 'ctrl-n'
+set -g @sshx-bind-select-down 'ctrl-p'
 ```
 
 ## Working with SSHX 👷
@@ -121,7 +129,7 @@ Launching the plugin opens a fuzzy finder with tmux windows that match SSH host 
 - `esc` - Abort without connecting
 - `ctrl-a` - Show all items (tmux windows + SSH configs)
 - `ctrl-t` - Filter to show only matching tmux windows
-- `ctrl-c` - Filter to show only SSH configs
+- `ctrl-h` - Filter to show only SSH configs
 - `tab` - Move down in list
 - `shift-tab` - Move up in list
 - `ctrl-u` - Scroll preview up

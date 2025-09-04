@@ -126,28 +126,35 @@ run_plugin() {
 	eval "$(tmux show-option -gqv @sshx-_built-args)"
 	FZF_BUILTIN_TMUX=$(tmux show-option -gqv @sshx-fzf-builtin-tmux)
 
+	# Get size args
+	window_height=$(tmux_option_or_fallback "@sshx-window-height" "65%")
+	window_width=$(tmux_option_or_fallback "@sshx-window-width" "70%")
+	if [[ "$FZF_BUILTIN_TMUX" == "on" ]]; then
+		fzf_size_arg="--tmux $window_width,$window_height"
+	else
+		fzf_size_arg="-p $window_width,$window_height"
+	fi
+
 	# Use fzf-tmux with colored emojis and sesh-like interface
 	if [[ "$FZF_BUILTIN_TMUX" == "on" ]]; then
 		RESULT=$(echo -e "${INPUT}" | fzf \
-			--no-sort --ansi --border-label ' sshx ' --prompt '⚡  ' \
-			--header '  ^a all ^t tmux ^c configs' \
+			--no-sort --ansi \
+			--header '  ^a all ^t tmux ^h configs' \
 			--bind 'tab:down,btab:up' \
 			--bind 'ctrl-a:change-prompt(⚡  )+reload(echo -e "'"$TMUX_WINDOWS\n$SSH_CONFIGS"'")' \
 			--bind 'ctrl-t:change-prompt(  )+reload(echo -e "'"$TMUX_WINDOWS"'")' \
-			--bind 'ctrl-c:change-prompt(  )+reload(echo -e "'"$SSH_CONFIGS"'")' \
-			--preview-window 'right:60%' \
+			--bind 'ctrl-h:change-prompt(  )+reload(echo -e "'"$SSH_CONFIGS"'")' \
 			--preview "$CURRENT_DIR/preview.sh {}" \
 			--color 'fg+:255,bg+:236' \
 			"${fzf_opts[@]}" "${args[@]}" | tail -n1)
 	else
-		RESULT=$(echo -e "${INPUT}" | fzf-tmux -p 80%,70% \
-			--no-sort --ansi --border-label ' sshx ' --prompt '⚡  ' \
-			--header '  ^a all ^t tmux ^c configs' \
+		RESULT=$(echo -e "${INPUT}" | fzf-tmux $fzf_size_arg \
+			--no-sort --ansi \
+			--header '  ^a all ^t tmux ^h configs' \
 			--bind 'tab:down,btab:up' \
 			--bind 'ctrl-a:change-prompt(⚡  )+reload(echo -e "'"$TMUX_WINDOWS\n$SSH_CONFIGS"'")' \
 			--bind 'ctrl-t:change-prompt(  )+reload(echo -e "'"$TMUX_WINDOWS"'")' \
-			--bind 'ctrl-c:change-prompt(  )+reload(echo -e "'"$SSH_CONFIGS"'")' \
-			--preview-window 'right:60%' \
+			--bind 'ctrl-h:change-prompt(  )+reload(echo -e "'"$SSH_CONFIGS"'")' \
 			--preview "$CURRENT_DIR/preview.sh {}" \
 			--color 'fg+:255,bg+:236' \
 			"${fzf_opts[@]}" "${args[@]}" | tail -n1)
