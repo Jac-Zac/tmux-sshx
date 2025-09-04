@@ -54,13 +54,13 @@ sudo pacman -S tmux fzf bat tmux-plugin-manager
 
 The default binding for this plugin is `<prefix>+S`. You can change it by adding this line with your desired key:
 
-```
+```sh
 set -g @sshx-bind '<mykey>'
 ```
 
 ### Additional configuration options:
 
-```
+```sh
 # By default, tmux `<prefix>` key needs to pressed before `<mykey>` to launch
 # sshx. In case you just want to bind '<mykey>' without the tmux '<prefix>'
 # add the following line to turn the prefix off. This option is set to
