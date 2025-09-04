@@ -7,15 +7,16 @@ A fuzzy SSH host selector for Tmux, with preview capabilities, similar to tmux-s
 ## Prerequisites 🛠️
 
 - [tpm](https://github.com/tmux-plugins/tpm)
-- [fzf](https://github.com/junegunn/fzf)
-- [bat](https://github.com/sharkdp/bat) for syntax highlighting in preview
+- [fzf](https://github.com/junegunn/fzf) (version 0.53.0+ recommended for built-in tmux support)
+- [bat](https://github.com/sharkdp/bat) for syntax highlighting in preview (optional, falls back to plain text)
 
 ### Installing Prerequisites
 
 #### macOS (with Homebrew)
 
 ```bash
-brew install tmux tpm fzf bat
+brew install tmux fzf bat
+# TPM is installed via git clone in the manual section
 ```
 
 #### Ubuntu/Debian
@@ -23,21 +24,22 @@ brew install tmux tpm fzf bat
 ```bash
 sudo apt update
 sudo apt install tmux fzf bat
-# Install TPM manually
+# Install TPM manually (if not available in repos)
 git clone https://github.com/tmux-plugins/tpm ~/.tmux/plugins/tpm
 ```
 
 #### Arch Linux
 
 ```bash
-sudo pacman -S tmux fzf bat tmux-plugin-manager
+sudo pacman -S tmux fzf bat
+# tmux-plugin-manager is available in AUR if needed
 ```
 
 #### Manual Installation
 
 - **Tmux**: Download from https://github.com/tmux/tmux/releases
 - **TPM**: `git clone https://github.com/tmux-plugins/tpm ~/.tmux/plugins/tpm`
-- **fzf**: Download from https://github.com/junegunn/fzf/releases
+- **fzf**: Download from https://github.com/junegunn/fzf/releases (get the latest version for tmux support)
 - **bat**: Download from https://github.com/sharkdp/bat/releases
 
 ## Install 💻
@@ -95,11 +97,20 @@ set -g @sshx-additional-options "--color pointer:9,spinner:92,marker:46"
 # When set to 'on' auto-accept will interactively accept a host
 # when there's only one match
 set -g @sshx-auto-accept 'off'
+
+# Uses \`fzf --tmux\` instead of the \`fzf-tmux\` script (requires fzf >= 0.53).
+# Set to 'on' if you have fzf 0.53+ and want to use built-in tmux support
+set -g @sshx-fzf-builtin-tmux 'off'
 ```
 
 ## Working with SSHX 👷
 
 Launching the plugin opens a fuzzy finder at the bottom of your screen with SSH hosts from `~/.ssh/config`. The preview pane on the right shows the selected host's configuration with syntax highlighting.
+
+**Note**: If the popup appears empty, check that:
+- `~/.ssh/config` exists and contains `Host` entries
+- Your SSH config has valid host definitions
+- The file is readable (run `ls -la ~/.ssh/config`)
 
 - `enter` accept selection and SSH into host
 - `esc` abort without connecting
@@ -113,6 +124,30 @@ When you select a host:
 
 - If inside tmux: Opens SSH in a new tmux window
 - If outside tmux: Runs SSH directly in your terminal
+
+## Troubleshooting 🔧
+
+### Empty Popup
+If the fuzzy finder appears but is empty:
+1. Check if `~/.ssh/config` exists: `ls -la ~/.ssh/config`
+2. Verify it contains Host entries: `grep "^Host " ~/.ssh/config`
+3. Ensure the file is readable: `cat ~/.ssh/config`
+4. Try creating a basic config if none exists:
+   ```
+   Host example
+       HostName example.com
+       User youruser
+   ```
+
+### Permission Issues
+If you get permission errors:
+```bash
+chmod 600 ~/.ssh/config
+```
+
+### Preview Not Working
+- Install `bat` for syntax highlighting: `brew install bat` (macOS) or `sudo apt install bat` (Ubuntu)
+- Or the preview will still work but without colors
 
 ## Thanks ❤️
 

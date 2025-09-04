@@ -42,8 +42,13 @@ handle_args() {
 	if [[ "$preview_enabled" == "true" ]]; then
 		PREVIEW_LINE="${SCRIPTS_DIR%/}/preview.sh {}"
 	fi
+	FZF_BUILTIN_TMUX=$(tmux_option_or_fallback "@sshx-fzf-builtin-tmux" "off")
 
-	fzf_size_arg="--tmux bottom"
+	if [[ "$FZF_BUILTIN_TMUX" == "on" ]]; then
+		fzf_size_arg="--tmux"
+	else
+		fzf_size_arg="-p"
+	fi
 
 	args=(
 		--bind "$ACCEPT"
@@ -58,7 +63,7 @@ handle_args() {
 		--preview-window="${preview_location},${preview_ratio},,"
 		--layout="$layout_mode"
 		--pointer="$pointer_icon"
-		"${fzf_size_arg},$window_width,$window_height"
+		"${fzf_size_arg}" "$window_width,$window_height"
 		--prompt "$prompt_icon"
 		--print-query
 		--tac

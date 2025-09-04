@@ -3,7 +3,16 @@
 CURRENT_DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
 
 get_ssh_hosts() {
-	awk '/^Host / {print $2}' ~/.ssh/config | grep -v '[*?]' | sort
+	if [[ ! -f ~/.ssh/config ]]; then
+		echo "No SSH config found at ~/.ssh/config"
+		return 1
+	fi
+	hosts=$(awk '/^Host / {print $2}' ~/.ssh/config | grep -v '[*?]' | sort)
+	if [[ -z "$hosts" ]]; then
+		echo "No SSH hosts found in ~/.ssh/config"
+		return 1
+	fi
+	echo "$hosts"
 }
 
 tmux_option_or_fallback() {
@@ -16,7 +25,7 @@ tmux_option_or_fallback() {
 }
 
 input() {
-	get_ssh_hosts
+	get_ssh_hosts 2>/dev/null || echo "Error: Check your SSH configuration"
 }
 
 handle_output() {
@@ -38,9 +47,12 @@ handle_output() {
 
 run_plugin() {
 	eval $(tmux show-option -gqv @sshx-_built-args)
-	INPUT=$(input)
-
-	RESULT=$(echo -e "${INPUT}" | fzf-tmux "${fzf_opts[@]}" "${args[@]}" | tail -n1)
+	FZF_BUILTIN_TMUX=$(tmux show-option -gqv @sshx-fzf-builtin-tmux)
+	if [[ "$FZF_BUILTIN_TMUX" == "on" ]]; then
+		RESULT=$(echo -e "${INPUT}" | fzf "${fzf_opts[@]}" "${args[@]}" | tail -n1)
+	else
+		RESULT=$(echo -e "${INPUT}" | fzf-tmux "${fzf_opts[@]}" "${args[@]}" | tail -n1)
+	fi
 }
 
 run_plugin
