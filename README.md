@@ -1,6 +1,6 @@
 # Tmux SSHX
 
-A fuzzy SSH host selector for Tmux, with preview capabilities, similar to tmux-sessionx but for SSH hosts.
+A fuzzy SSH host and tmux window selector for Tmux, with preview capabilities. Shows tmux windows that match SSH host names first (blue ), then SSH hosts as new configs (yellow ).
 
 ![image](showcase.gif)
 
@@ -114,27 +114,30 @@ set -g @sshx-fzf-builtin-tmux 'off'
 
 ## Working with SSHX 👷
 
-Launching the plugin opens a fuzzy finder at the bottom of your screen with SSH hosts from `~/.ssh/config`. The preview pane on the right shows the selected host's configuration with syntax highlighting.
+Launching the plugin opens a fuzzy finder with tmux windows that match SSH host names first (blue ), followed by SSH hosts as new configs (yellow ). The preview pane shows details for the selected item.
+
+**Key Bindings:**
+- `enter` - Accept selection and connect/attach
+- `esc` - Abort without connecting
+- `ctrl-a` - Show all items (tmux windows + SSH configs)
+- `ctrl-t` - Filter to show only matching tmux windows
+- `ctrl-c` - Filter to show only SSH configs
+- `tab` - Move down in list
+- `shift-tab` - Move up in list
+- `ctrl-u` - Scroll preview up
+- `ctrl-d` - Scroll preview down
+- `?` - Toggle preview pane
+
+**Selection Behavior:**
+- **Tmux Window (blue )**: Switches to the selected tmux window
+- **SSH Host (yellow )**: Opens SSH connection in new tmux window (if in tmux) or directly in terminal
 
 **Note**: If the popup appears empty, check that:
-
+- You have tmux windows with names matching your SSH hosts, or
 - `~/.ssh/config` exists and contains `Host` entries
 - Your SSH config has valid host definitions
 - The file is readable (run `ls -la ~/.ssh/config`)
 - The file has correct permissions (run `chmod 600 ~/.ssh/config` if needed)
-
-- `enter` accept selection and SSH into host
-- `esc` abort without connecting
-- `ctrl-u` scroll preview up
-- `ctrl-d` scroll preview down
-- `ctrl-n` select up
-- `ctrl-p` select down
-- `?` toggles the preview pane
-
-When you select a host:
-
-- If inside tmux: Opens SSH in a new tmux window
-- If outside tmux: Runs SSH directly in your terminal
 
 ## Troubleshooting 🔧
 
