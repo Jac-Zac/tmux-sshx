@@ -19,10 +19,10 @@ preview_settings() {
 }
 
 window_settings() {
-	window_height=$(tmux_option_or_fallback "@sshx-window-height" "90%")
+	window_height=$(tmux_option_or_fallback "@sshx-window-height" "75%")
 	window_width=$(tmux_option_or_fallback "@sshx-window-width" "75%")
 	layout_mode=$(tmux_option_or_fallback "@sshx-layout" "reverse")
-	prompt_icon=$(tmux_option_or_fallback "@sshx-prompt" "SSH> ")
+	prompt_icon=$(tmux_option_or_fallback "@sshx-prompt" " ")
 	pointer_icon=$(tmux_option_or_fallback "@sshx-pointer" "▶")
 }
 
@@ -34,6 +34,8 @@ handle_binds() {
 	bind_scroll_down=$(tmux_option_or_fallback "@sshx-bind-scroll-down" "ctrl-d")
 	bind_select_up=$(tmux_option_or_fallback "@sshx-bind-select-up" "ctrl-n")
 	bind_select_down=$(tmux_option_or_fallback "@sshx-bind-select-down" "ctrl-p")
+
+	ACCEPT="$bind_accept:replace-query+print-query"
 }
 
 handle_args() {
@@ -42,7 +44,7 @@ handle_args() {
 	fi
 
 	args=(
-		--bind "$bind_accept:print-query"
+		--bind "$ACCEPT"
 		--bind "$bind_exit:abort"
 		--bind "$bind_scroll_up:preview-half-page-up"
 		--bind "$bind_scroll_down:preview-half-page-down"
@@ -57,6 +59,7 @@ handle_args() {
 		-p "$window_width,$window_height"
 		--prompt "$prompt_icon"
 		--print-query
+		--tac
 		--scrollbar '▌▐'
 	)
 

@@ -1,6 +1,6 @@
 # Tmux SSHX
 
-A fuzzy SSH host selector for Tmux, with preview capabilities.
+A fuzzy SSH host selector for Tmux, with preview capabilities, similar to tmux-sessionx but for SSH hosts.
 
 [![image](https://github.com/omerxx/tmux-sessionx/raw/main/img/sessionxv2.png)](https://github.com/omerxx/tmux-sessionx/blob/main/img/sessionxv2.png)
 
@@ -9,6 +9,7 @@ A fuzzy SSH host selector for Tmux, with preview capabilities.
 - [tpm](https://github.com/tmux-plugins/tpm)
 - [fzf](https://github.com/junegunn/fzf)
 - [fzf-tmux](https://github.com/junegunn/fzf#fzf-tmux-script)
+- Optional: [bat](https://github.com/sharkdp/bat) for syntax highlighting in preview
 
 ## Install 💻
 
@@ -23,7 +24,7 @@ set -g @plugin 'yourusername/tmux-sshx'
 The default binding for this plugin is `<prefix>+S`. You can change it by adding this line with your desired key:
 
 ```
-set -g @sessionx-bind '<mykey>'
+set -g @sshx-bind '<mykey>'
 ```
 
 ### Additional configuration options:
@@ -36,14 +37,14 @@ set -g @sessionx-bind '<mykey>'
 set -g @sshx-prefix off
 
 # Change window dimensions
-set -g @sshx-window-height '90%'
+set -g @sshx-window-height '75%'
 set -g @sshx-window-width '75%'
 
 # If you want change the layout to top you can set
 set -g @sshx-layout 'reverse'
 
 # If you want to change the prompt, the space is needed to not overlap the icon
-set -g @sshx-prompt "SSH> "
+set -g @sshx-prompt " "
 
 # If you want to change the pointer
 set -g @sshx-pointer "▶ "
@@ -69,6 +70,8 @@ set -g @sshx-auto-accept 'off'
 
 Launching the plugin pops up an fzf-tmux "popup" with fuzzy search over SSH hosts from `~/.ssh/config`. If you select a host and hit enter, it will SSH into it. If in tmux, it opens a new window; otherwise, runs SSH directly.
 
+- `enter` accept selection
+- `esc` abort
 - `ctrl-u` scroll preview up
 - `ctrl-d` scroll preview down
 - `ctrl-n` select up
@@ -77,4 +80,4 @@ Launching the plugin pops up an fzf-tmux "popup" with fuzzy search over SSH host
 
 ## Thanks ❤️
 
-Inspired by [tmux-sessionx](https://github.com/omerxx/tmux-sessionx) and your original function.
+Inspired by [tmux-sessionx](https://github.com/omerxx/tmux-sessionx) and your original tmux_fzf_ssh function.
