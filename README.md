@@ -1,5 +1,7 @@
 # Tmux SSHX
 
+## I would suggest to use this from [Television](https://alexpasmantier.github.io/television/community/channels-unix/#ssh-hosts)
+
 A fuzzy SSH host and tmux window selector for Tmux, with preview capabilities. Shows tmux windows that match SSH host names first (blue ), then SSH hosts as new configs (yellow ).
 
 ![image](showcase.gif)
